@@ -8,6 +8,7 @@
 #include "utilities.h"
 using namespace std;
 
+// Clase para manejar las instrucciones
 class Instruction{
     private: 
         int instruction_id;
@@ -16,8 +17,10 @@ class Instruction{
         int parameter_2;
         int parameter_3;
     public:
-        Instruction();
-        Instruction(int instruction_id, string instruction_code,
+        Instruction(); // Constructor por defecto
+        Instruction(int instruction_id, string instruction_code, // Constructor con parámetros
+
+// Métodos para acceder y modificar los atributos de la instrucción
         int parameter_1, int parameter_2, int parameter_3);
         void setInstructionId(int instruction_id);
         void setinstructionCode(string instruction_code);
@@ -30,3 +33,11 @@ class Instruction{
         int getParameter2();
         int getParameter3();
 };
+
+// Funciones para manejar la máquina de ejecución
+void ejecutarArchivo(string filePath);
+void ejecutarInstruccion(const Instruction& instr, int* registros, int* datos_memoria);
+void printMenu();
+
+#endif
+
