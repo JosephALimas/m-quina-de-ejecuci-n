@@ -32,7 +32,40 @@ void ejecutarArchivo(string filePath) {
     string linea;
     vector<Instruction> instrucciones;
 
+    // Leer archivo línea por línea
+    while (getline(file, linea)) {
+        if (linea.empty() || linea[0] == '*') {
+            continue;  // Ignorar comentarios y líneas vacías
+        }
 
+        stringstream ss(linea);
+        int id, p1, p2, p3;
+        string code;
+
+        ss >> id >> code >> p1 >> p2 >> p3;
+        Instruction instr(id, code, p1, p2, p3);
+        instrucciones.push_back(instr);
+    }
+
+    // Ejecutar las instrucciones
+    for (const auto& instr : instrucciones) {
+        ejecutarInstruccion(instr, registros, datos_memoria);
+    }
+
+    file.close();
+}
+
+// Función para ejecutar instrucciones manualmente
+void ejecutarInstruccionManual() {
+    int id, p1, p2, p3;
+    string code;
+    
+    cout << "Introduzca una instrucción en el formato: ID CODE P1 P2 P3" << endl;
+    cin >> id >> code >> p1 >> p2 >> p3;
+    
+    Instruction instr(id, code, p1, p2, p3);
+    ejecutarInstruccion(instr, registros, datos_memoria);
+}
 
 int main(){
     bool programm_running_flag = true;
