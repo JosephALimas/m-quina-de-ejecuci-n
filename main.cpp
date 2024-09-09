@@ -19,7 +19,19 @@ void printMenu(){
     cout<<"Seleccione una opción";
     cout<<"1.- Ejecutar un archivo";
     cout<<"2.- Ejecutar instrucciónes";
+    cout<<"3.- Salir";
 }
+
+void ejecutarArchivo(string filePath) {
+    ifstream file(filePath);
+    if (!file.is_open()) {
+        cerr << "Error: No se pudo abrir el archivo." << endl;
+        return;
+    }
+
+    string linea;
+    vector<Instruction> instrucciones;
+
 
 
 int main(){
