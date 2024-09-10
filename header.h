@@ -19,7 +19,7 @@ class Instruction {
 
     public:
         Instruction(); // Constructor por defecto
-        Instruction(int instruction_id, string instruction_code, int parameter_1, int parameter_2, int parameter_3); // Constructor con parámetros
+        Instruction(int instruction_id, string instruction_code, // Constructor con parámetros
 
 // Métodos para acceder y modificar los atributos de la instrucción
         int parameter_1, int parameter_2, int parameter_3);
