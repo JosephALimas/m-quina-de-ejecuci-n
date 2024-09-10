@@ -24,7 +24,7 @@ class Instruction {
 
 // Métodos para acceder y modificar los atributos de la instrucción
         void setInstructionId(int instruction_id);
-        void setinstructionCode(string instruction_code);
+        void setInstructionCode (string instruction_code);
         void setParameter1(int parameter_1);
         void setParameter2(int parameter_2);
         void setParameter3(int parameter_3);
