@@ -1,4 +1,6 @@
 #include "header.h"
+
+// Función para imprimir el menú
 void printMenu(){
     cout<<"--------Maquina de ejecución--------";
     cout<<"Seleccione una opción";
@@ -6,6 +8,7 @@ void printMenu(){
     cout<<"2.- Ejecutar instrucciónes";
 }
 
+// Constructor de la clase Instruction
 Instruction::Instruction(int instruction_id, string instruction_code, 
 int parameter_1, int parameter_2, int parameter_3){
     this-> instruction_id = instruction_id;
@@ -14,6 +17,8 @@ int parameter_1, int parameter_2, int parameter_3){
     this-> parameter_2 = parameter_2;
     this-> parameter_3 = parameter_3;
 }
+
+// Métodos setter
 void Instruction::setInstructionId(int instruction_id){
     this->instruction_id = instruction_id;
 }
@@ -44,6 +49,8 @@ int Instruction::getParameter2(){
 int Instruction::getParameter3(){
     return parameter_3;
 }
+// Implementación pendiente de la función para leer archivos CSV
 void readInstructionCSV(){
 
 }
+
