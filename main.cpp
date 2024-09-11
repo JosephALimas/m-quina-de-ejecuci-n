@@ -24,7 +24,9 @@ int main(){
         case 1:
             cout<<"Seleccione un archivo para ejecutar"<<endl;
             cin>>filePath;
+            
             break;
+<<<<<<< HEAD
         case 2: {
                 int id, p1, p2, p3;
                 string code;
@@ -36,6 +38,15 @@ int main(){
                 programm_running_flag = false;
                 cout << "Saliendo del programa..." << endl;
                 break;
+=======
+        case 2:
+            cout<<"Introduzca una instruccion"<<endl;
+            break;
+        default:
+            break;
+        }
+    } 
+>>>>>>> emi
 
             default:
                 cout << "Opción no válida, intente de nuevo." << endl;
