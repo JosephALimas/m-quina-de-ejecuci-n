@@ -30,3 +30,5 @@ class Instruction{
         int getParameter2();
         int getParameter3();
 };
+
+void printMenu();

@@ -44,6 +44,17 @@ int Instruction::getParameter2(){
 int Instruction::getParameter3(){
     return parameter_3;
 }
-void readInstructionCSV(){
-
+void readInstructionCSV(string filepath){
+    ifstream instructions(filepath, ios::in); // se lee el archivo
+    if(instructions){ //valiación en caso de que no se haya leido de manera correcta el archivo
+        cerr<<"El archivo de instrucciones no se pudo leer correctamente, por favo intente de nuevo"<<endl;
+        exit(EXIT_FAILURE);
+    }
+    string temp_linea; // declaramos el string en donde vamos a almacenar el csv
+    while(getline(instructions, temp_linea, '\n')){
+        while(getline(instructions, temp_linea, ' ')){
+            int temp_instruction_id = stoi(temp_linea);
+            getline
+        }
+    }
 }

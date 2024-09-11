@@ -33,12 +33,11 @@ int main(){
         case 1:
             cout<<"Seleccione un archivo para ejecutar"<<endl;
             cin>>filePath;
+            
             break;
         case 2:
             cout<<"Introduzca una instruccion"<<endl;
-            
             break;
-        
         default:
             break;
         }
