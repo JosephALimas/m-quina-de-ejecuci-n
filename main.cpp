@@ -10,7 +10,8 @@ const int pc_registro = 7;
 // estructuras importantes
 int datos_memoria[max_datos] = { 0 };  
 int registros[num_registros] = { 0 };   
-std::string filePath = "";      
+int file_length = 0;
+std::string filePath = "C:\\Users\\emili\\OneDrive\\Escritorio\\UP\\_quinto_\\teorias_lenguajes\\ejemplo_instruccion.txt";
 
 int main() {
     bool programm_running_flag = true;
@@ -23,8 +24,9 @@ int main() {
         switch (opcion) {
         case 1:
             std::cout << "Seleccione un archivo para ejecutar\n" << std::endl;
-            std::cin >> filePath;
-            readInstructionCSV(filePath);   
+            //std::cin >> filePath;
+            file_length = getFileLength(filePath);
+            readInstructionCSV(filePath, file_length);   
             break;
         case 2: {
             int id, p1, p2, p3;

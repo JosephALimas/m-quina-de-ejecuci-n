@@ -55,20 +55,63 @@ int Instruction::getParameter2() {
 int Instruction::getParameter3() {
     return parameter_3;
 }
-void readInstructionCSV(string filepath) {
-    cout << "PRUEBA DE QUE ENTRA EN LA FUNCION READINSTRUCIONS" << endl;
+
+int getFileLength(string filepath) {
     ifstream instructions(filepath, ios::in); // se lee el archivo
-    if (instructions) { //valiación en caso de que no se haya leido de manera correcta el archivo
+    if (!instructions) { //valiación en caso de que no se haya leido de manera correcta el archivo
+        cerr << "El archivo de instrucciones no se pudo leer correctamente, por favo intente de nuevo\n" << endl;
+        exit(EXIT_FAILURE);
+    }
+    std::string linea;
+    int contadorLineas = 0;
+
+    while (getline(instructions, linea)) {
+        contadorLineas++;  // Incrementar contador por cada línea leída
+    }
+
+    instructions.close();
+    cout << contadorLineas << endl;
+    return contadorLineas;
+}
+
+
+void readInstructionCSV(string filepath, int file_length) {
+    ifstream instructions(filepath, ios::in); // se lee el archivo
+    if (!instructions) { //valiación en caso de que no se haya leido de manera correcta el archivo
         cerr << "El archivo de instrucciones no se pudo leer correctamente, por favo intente de nuevo\n" << endl;
         exit(EXIT_FAILURE);
     }
     string temp_linea; // declaramos el string en donde vamos a almacenar el csv
+    while (getline(instructions, temp_linea)) {
+        int temp_id = 0;
+        string temp_instruction = "";
+        int temp_parameter1 = 0;
+        int temp_parameter2 = 0;
+        int temp_parameter3 = 0;
+
+        stringstream ss(temp_linea);
+        string component;
+        getline(ss, component, ':');
+
+    }
+
+
+    for (int i = 0; i < file_length; i++) {
+        getline(instructions, temp_linea, ':');
+        
+
+    }
+
+    /*
     while (getline(instructions, temp_linea, '\n')) {
-        while (getline(instructions, temp_linea, ' ')) {
+        cout << temp_linea << endl;
+        while (getline(instructions, temp_linea, ':')) {
+            cout << temp_linea << endl;
             int temp_instruction_id = stoi(temp_linea);
             //getline
         }
     }
+    */
 }
 void ejecutarInstruccion(const Instruction& instr, int* registros, int* datos_memoria) {
 

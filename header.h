@@ -38,4 +38,5 @@ public:
 //void ejecutarArchivo(string filePath);
 void ejecutarInstruccion(const Instruction& instr, int* registros, int* datos_memoria);
 void printMenu();
-void readInstructionCSV(string filepath);
+int getFileLength(string filetpath);
+void readInstructionCSV(string filepath, int file_length);
