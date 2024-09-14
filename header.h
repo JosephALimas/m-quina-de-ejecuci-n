@@ -37,6 +37,8 @@ public:
 // Funciones para manejar la máquina de ejecución
 //void ejecutarArchivo(string filePath);
 void ejecutarInstruccion(const Instruction& instr, int* registros, int* datos_memoria);
+void ejecutarOperacion(const Instruction& instr, int* registros);
+void ejecutarMemoria(const Instruction& instr, int* registros, int* datos_memoria);
 void printMenu();
 int getFileLength(string filetpath);
 void readInstructionCSV(string filepath, int file_length);

@@ -24,6 +24,18 @@ Instruction::Instruction(int instruction_id, string instruction_code,
     this->parameter_3 = parameter_3;
 }
 
+void ejecutarOperacion(const Instruction& instr, int* registros){
+    string instr_code = instr.getInstructionCode();
+    int r =instr.getParameter1();
+    int s = instr.getParameter2();
+    int t = instr.getParameter3();  
+    if(instr_code=="ADD"){
+        registros[r] = registros[s] + registros[t];
+    }else if(instr_code=="SUB"){
+        registros[r] = registros[s] - registros[t];
+}
+}
+
 // Métodos setter
 void Instruction::setInstructionId(int instruction_id) {
     this->instruction_id = instruction_id;
