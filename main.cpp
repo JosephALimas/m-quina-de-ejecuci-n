@@ -48,6 +48,21 @@ int main() {
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 break;
             }
+            
+            // Válidas instrucciones de operación y memoria
+                std::set<std::string> instrucciones_validas = {
+                    "ADD", "SUB", "MUL", "DIV",   // Operaciones
+                    "IN", "OUT", "HALT",          // Entrada/Salida
+                    "LD", "LDA", "ST",            // Instrucciones de memoria
+                    "JLT", "JLE", "JGE", "JEQ", "JNE"  // Saltos condicionales
+                };
+
+            // Verificar si el código de instrucción es válido
+            if (instrucciones_validas.find(code) == instrucciones_validas.end()) {
+                std::cerr << "Error: Instrucción desconocida: " << code << std::endl;
+                break;  // Salir si la instrucción no es válida
+}
+
             Instruction instr(id, code, p1, p2, p3);    
             ejecutarInstruccion(instr, registros, datos_memoria);   
             break;
