@@ -36,6 +36,19 @@ void ejecutarOperacion(const Instruction& instr, int* registros){
 }
 }
 
+void ejecutarMemoria(const Instruction& instr, int* registros, int* datos_memoria){
+    string instr_code = instr.getInstructionCode();
+    int r =instr.getParameter1();
+    int s = instr.getParameter2();
+    int t = instr.getParameter3();
+    int a=d+registros[s]; // si está fuera de los límites del arreglo ERROR
+
+    If (instr_code=="LOAD"){
+        if(a<0 ||a>=max_datos){
+            cout<<"Error: dirección fuera de los límites del arreglo"<<endl;
+        }else{
+            registros[r]=datos_memoria[a];
+        }
 // Métodos setter
 void Instruction::setInstructionId(int instruction_id) {
     this->instruction_id = instruction_id;
