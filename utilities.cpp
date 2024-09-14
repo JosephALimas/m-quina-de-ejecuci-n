@@ -49,7 +49,7 @@ void ejecutarMemoria(const Instruction& instr, int* registros, int* datos_memori
         }else{
             registros[r]=datos_memoria[a];
         }
-    }
+    }}
 
 // Métodos setter
 void Instruction::setInstructionId(int instruction_id) {
