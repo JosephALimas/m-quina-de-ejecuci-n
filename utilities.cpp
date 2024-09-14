@@ -60,8 +60,24 @@ void ejecutarMemoria(const Instruction& instr, int* registros, int* datos_memori
     }else if(instr_code=="LDA"){
         registros[r]=a;
        
+    }else if(instr_code=="LDC"){
+        registros[r]=d;
     }
-
+    else if(instr_code=="JLT"){
+        if(registros[r]<0){
+            registros[pc_registro]=a;
+        }
+    }else if(instr_code=="JLE"){
+        if(registros[r]<=0){
+            registros[pc_registro]=a;
+        }}
+    else if(instr_code=="JGE"){
+        if(registros[r]>=0){
+            registros[pc_registro]=a;
+        }}else{
+            cin<<"Error: instrucción no válida"<<endl;
+            return -1;
+        }
 // Métodos setter
 void Instruction::setInstructionId(int instruction_id) {
     this->instruction_id = instruction_id;
