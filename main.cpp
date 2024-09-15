@@ -26,13 +26,43 @@ int main() {
             std::cout << "Seleccione un archivo para ejecutar\n" << std::endl;
             //std::cin >> filePath;
             file_length = getFileLength(filePath);
-            readInstructionCSV(filePath, file_length);   
+
+             // Validar que el archivo no esté vacío
+            if (file_length == 0) {
+                std::cerr << "Error: El archivo está vacío o no pudo ser leído." << std::endl;
+                break;
+            }
+
+            readInstructionCSV(filePath, file_length); 
             break;
         case 2: {
             int id, p1, p2, p3;
             std::string code;
             std::cout << "Introduzca una instrucción en el formato: ID CODE P1 P2 P3\n" << std::endl;
             std::cin >> id >> code >> p1 >> p2 >> p3;
+            
+            // Verificar si la entrada es válida
+            if (std::cin.fail()) {
+                std::cerr << "Entrada inválida, por favor intente de nuevo." << std::endl;
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                break;
+            }
+            
+            // Válidas instrucciones de operación y memoria
+                std::set<std::string> instrucciones_validas = {
+                    "ADD", "SUB", "MUL", "DIV",   // Operaciones
+                    "IN", "OUT", "HALT",          // Entrada/Salida
+                    "LD", "LDA", "ST",            // Instrucciones de memoria
+                    "JLT", "JLE", "JGE", "JEQ", "JNE"  // Saltos condicionales
+                };
+
+            // Verificar si el código de instrucción es válido
+            if (instrucciones_validas.find(code) == instrucciones_validas.end()) {
+                std::cerr << "Error: Instrucción desconocida: " << code << std::endl;
+                break;  // Salir si la instrucción no es válida
+}
+
             Instruction instr(id, code, p1, p2, p3);    
             ejecutarInstruccion(instr, registros, datos_memoria);   
             break;

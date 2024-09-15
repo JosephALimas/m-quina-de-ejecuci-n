@@ -29,18 +29,47 @@ void ejecutarOperacion(const Instruction& instr, int* registros){
     int r =instr.getParameter1();
     int s = instr.getParameter2();
     int t = instr.getParameter3();  
-    if(instr_code=="ADD"){
-        registros[r] = registros[s] + registros[t];
-    }else if(instr_code=="SUB"){
-        registros[r] = registros[s] - registros[t];
+
+    if (instr_code == "HALT") {
+        cout << "Máquina detenida." << endl;
+        exit(0);  // Detiene la ejecución
+    } 
+    else if (instr_code == "IN") {
+        cout << "Introduce un valor para reg[" << r << "]: ";
+        cin >> registros[r];  // Almacena el valor en reg[r]
+    } 
+    else if (instr_code == "OUT") {
+        cout << "Valor de reg[" << r << "]: " << registros[r] << endl;  // Imprime el valor de reg[r]
+    } 
+    else if (instr_code=="ADD"){
+        registros[r] = registros[s] + registros[t]; // Suma: reg[r] = reg[s] + reg[t]
+    } 
+    else if(instr_code=="SUB"){
+        registros[r] = registros[s] - registros[t]; // Resta: reg[r] = reg[s] - reg[t]
+    }
+    else if (instr_code == "MUL") {
+        registros[r] = registros[s] * registros[t]; // Multiplicación: reg[r] = reg[s] * reg[t]
+    }
+    else if (instr_code == "DIV") {
+        if (registros[t] == 0) {
+            cerr << "Error: División por cero." << endl;
+            exit(EXIT_FAILURE);  // Finaliza el programa en caso de error
+        }
+        registros[r] = registros[s] / registros[t]; // División: reg[r] = reg[s] / reg[t]
+    }
+
+    else {
+        cerr << "Error: Instrucción desconocida: " << instr_code << endl;
+        exit(EXIT_FAILURE);  // Finaliza el programa si encuentra una instrucción no válida
+    }
 }
-}
+
 
 void ejecutarMemoria(const Instruction& instr, int* registros, int* datos_memoria){
     string instr_code = instr.getInstructionCode();
     int r =instr.getParameter1();
-    int s = instr.getParameter2();
-    int t = instr.getParameter3();
+    int d = instr.getParameter2();
+    int s = instr.getParameter3();
     int a=d+registros[s]; // si está fuera de los límites del arreglo ERROR
 
     if (instr_code=="LOAD"){
