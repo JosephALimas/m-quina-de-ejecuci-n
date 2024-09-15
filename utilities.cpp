@@ -78,6 +78,7 @@ void ejecutarMemoria(const Instruction& instr, int* registros, int* datos_memori
             cin<<"Error: instrucción no válida"<<endl;
             return -1;
         }
+}
 // Métodos setter
 void Instruction::setInstructionId(int instruction_id) {
     this->instruction_id = instruction_id;
