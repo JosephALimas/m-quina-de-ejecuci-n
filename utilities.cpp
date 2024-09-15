@@ -67,45 +67,54 @@ void ejecutarOperacion(const Instruction& instr, int* registros){
 
 void ejecutarMemoria(const Instruction& instr, int* registros, int* datos_memoria){
     string instr_code = instr.getInstructionCode();
-    int r =instr.getParameter1();
+    int r =instr.getParameter1(); 
     int d = instr.getParameter2();
     int s = instr.getParameter3();
     int a=d+registros[s]; // si está fuera de los límites del arreglo ERROR
 
-    if (instr_code=="LOAD"){
+    if (instr_code=="LD"){
         if(a<0 ||a>=max_datos){
             cout<<"Error: dirección fuera de los límites del arreglo"<<endl;
-            return -1;
+             exit(EXIT_FAILURE);
         }else{
-            registros[r]=datos_memoria[a];
+            registros[r]=datos_memoria[a]; // carga el valor de la memoria en el registro
         }
     }else if(instr_code=="ST"){
         if(a<0 ||a>=max_datos){
             cout<<"Error: dirección fuera de los límites del arreglo"<<endl;
-            return -1;
+             exit(EXIT_FAILURE);
         }else{
-            datos_memoria[a]=registros[r];
+            datos_memoria[a]=registros[r];// guarda el valor del registro en la memoria
         }
     }else if(instr_code=="LDA"){
-        registros[r]=a;
+        registros[r]=a;//carga dirección
        
     }else if(instr_code=="LDC"){
-        registros[r]=d;
+        registros[r]=d;//carga constante
     }
     else if(instr_code=="JLT"){
         if(registros[r]<0){
-            registros[pc_registro]=a;
+            registros[pc_registro]=a;//salto si <0
         }
     }else if(instr_code=="JLE"){
         if(registros[r]<=0){
-            registros[pc_registro]=a;
+            registros[pc_registro]=a;//salto si menor o igual a 0 
         }}
     else if(instr_code=="JGE"){
         if(registros[r]>=0){
-            registros[pc_registro]=a;
-        }}else{
-            cin<<"Error: instrucción no válida"<<endl;
-            return -1;
+            registros[pc_registro]=a;//salto si mayor o igual a 0
+        }}
+    else if(instr_code=="JEQ"){
+        if(registros[r]==0){
+            registros[pc_registro]=a;//salto si igual a 0
+        }}
+    else if(instr_code=="JNE"){
+        if(registros[r]!=0){
+            registros[pc_registro]=a;//salto si diferente de 0
+        }}
+    else{
+        cin<<"Error: instrucción no válida"<<endl;
+            exit(EXIT_FAILURE);
         }
 }
 // Métodos setter
@@ -198,5 +207,14 @@ void readInstructionCSV(string filepath, int file_length) {
     */
 }
 void ejecutarInstruccion(const Instruction& instr, int* registros, int* datos_memoria) {
+    string instr_code = instr.getInstructionCode();
 
+    if(instr_code=="ADD"||instr_code=="SUB"||instr_code=="MUL"||instr_code=="DIV"||instr_code=="IN"||instr_code=="OUT"||instr_code=="HALT"){
+        ejecutarOperacion(instr, registros);
+}else if(instr_code=="LD"||instr_code=="LDA"||instr_code=="ST"||instr_code=="LDC"||instr_code=="JLT"||instr_code=="JLE"||instr_code=="JGE"||instr_code=="JEQ"||instr_code=="JNE"){
+    ejecutarMemoria(instr, registros, datos_memoria);
+}else{
+    cout<<"Error: instrucción no válida"<<endl;
+    exit(EXIT_FAILURE);
+}
 }
