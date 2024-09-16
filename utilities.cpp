@@ -24,27 +24,158 @@ Instruction::Instruction(int instruction_id, string instruction_code,
     this->parameter_3 = parameter_3;
 }
 
-void ejecutarOperacion(const Instruction& instr, int* registros){
+// Métodos setter
+void Instruction::setInstructionId(int instruction_id) {
+    this->instruction_id = instruction_id;
+}
+void Instruction::setInstructionCode(string instruction_code) {
+    this->instruction_code = instruction_code;
+}
+void Instruction::setParameter1(int parameter_1) {
+    this->parameter_1 = parameter_1;
+}
+void Instruction::setParameter2(int parameter_2) {
+    this->parameter_2 = parameter_2;
+}
+void Instruction::setParameter3(int parameter_3) {
+    this->parameter_3 = parameter_3;
+}
+int Instruction::getInstructionId() const {
+    return instruction_id;
+}
+string Instruction::getInstructionCode() const {
+    return instruction_code;
+}
+int Instruction::getParameter1()  const {
+    return parameter_1;
+}
+int Instruction::getParameter2()  const {
+    return parameter_2;
+}
+int Instruction::getParameter3()  const {
+    return parameter_3;
+}
+
+int getFileLength(string filepath) {
+    ifstream instructions(filepath, ios::in); // se lee el archivo
+    if (!instructions) { //valiación en caso de que no se haya leido de manera correcta el archivo
+        cerr << "El archivo de instrucciones no se pudo leer correctamente, por favo intente de nuevo\n" << endl;
+        exit(EXIT_FAILURE);
+    }
+    std::string linea;
+    int contadorLineas = 0;
+
+    while (getline(instructions, linea)) {
+        contadorLineas++;  // Incrementar contador por cada línea leída
+    }
+
+    instructions.close();
+    cout << contadorLineas << endl;
+    return contadorLineas;
+}
+
+void readInstructionCSV(string filepath, vector<Instruction>& instrucciones) {
+    ifstream instructions(filepath, ios::in); // se lee el archivo
+    if (!instructions) { //validación en caso de que no se haya leído de manera correcta el archivo
+        cerr << "El archivo de instrucciones no se pudo leer correctamente, por favor intente de nuevo\n" << endl;
+        exit(EXIT_FAILURE);
+    }
+    string temp_linea; // declaramos el string en donde vamos a almacenar cada línea del archivo
+    while (getline(instructions, temp_linea)) {
+        int temp_id = 0;
+        string temp_instruction = "";
+        int r = 0;
+        int s = 0;
+        int t = 0;
+
+        // Usamos stringstream para analizar la línea
+        stringstream ss(temp_linea);
+        string component;
+
+        // Leer el id (número antes del ':')
+        getline(ss, component, ':');
+        temp_id = stoi(component); // Convertimos el ID a entero
+
+        // Leer el código de instrucción (como "LD", "ST", etc.)
+        ss >> temp_instruction; // Lee el código de la instrucción
+
+        // Leer los parámetros r, s, t que están después del código
+        ss >> component;
+
+        // Procesar el formato de los parámetros dependiendo de si tiene paréntesis o comas
+        if (component.find('(') != string::npos) {
+            // Si contiene paréntesis, como 6,0(0)
+            string beforeParen = component.substr(0, component.find('('));
+            string insideParen = component.substr(component.find('(') + 1, component.find(')') - component.find('(') - 1);
+
+            // Dividimos los valores antes del paréntesis por comas
+            stringstream beforeStream(beforeParen);
+            string r_str, s_str;
+            getline(beforeStream, r_str, ','); // Leer el valor de r
+            getline(beforeStream, s_str, ','); // Leer el valor de s
+
+            // Convertir r, s, y t a enteros
+            r = stoi(r_str);
+            s = stoi(s_str);
+            t = stoi(insideParen); // Leer el valor de t desde dentro del paréntesis
+        }
+        else {
+            // Si el formato es con comas, como 0,0,0
+            stringstream paramStream(component);
+            string r_str, s_str, t_str;
+            getline(paramStream, r_str, ','); // Leer el valor de r
+            getline(paramStream, s_str, ','); // Leer el valor de s
+            getline(paramStream, t_str, ','); // Leer el valor de t
+
+            // Convertir r, s, y t a enteros
+            r = stoi(r_str);
+            s = stoi(s_str);
+            t = stoi(t_str);
+        }
+
+        // Crear una nueva instrucción y agregarla al vector
+        Instruction temp_instruccion(temp_id, temp_instruction, r, s, t);
+        instrucciones.push_back(temp_instruccion);
+    }
+}
+
+void ejecutarInstruccion(const Instruction& instr, int* registros, int* datos_memoria) {
     string instr_code = instr.getInstructionCode();
-    int r =instr.getParameter1();
+
+    if (instr_code == "ADD" || instr_code == "SUB" || instr_code == "MUL" || instr_code == "DIV" || instr_code == "IN" || instr_code == "OUT" || instr_code == "HALT") {
+        ejecutarOperacion(instr, registros);
+    }
+    else if (instr_code == "LD" || instr_code == "LDA" || instr_code == "ST" || instr_code == "LDC" || instr_code == "JLT" || instr_code == "JLE" || instr_code == "JGE" || instr_code == "JEQ" || instr_code == "JNE") {
+        ejecutarMemoria(instr, registros, datos_memoria);
+    }
+    else {
+        cout << "Error: instrucción no válida" << endl;
+        exit(EXIT_FAILURE);
+    }
+}
+
+
+void ejecutarOperacion(const Instruction& instr, int* registros) {
+    string instr_code = instr.getInstructionCode();
+    int r = instr.getParameter1();
     int s = instr.getParameter2();
-    int t = instr.getParameter3();  
+    int t = instr.getParameter3();
 
     if (instr_code == "HALT") {
         cout << "Máquina detenida." << endl;
         exit(0);  // Detiene la ejecución
-    } 
+    }
     else if (instr_code == "IN") {
         cout << "Introduce un valor para reg[" << r << "]: ";
         cin >> registros[r];  // Almacena el valor en reg[r]
-    } 
+    }
     else if (instr_code == "OUT") {
         cout << "Valor de reg[" << r << "]: " << registros[r] << endl;  // Imprime el valor de reg[r]
-    } 
-    else if (instr_code=="ADD"){
+    }
+    else if (instr_code == "ADD") {
         registros[r] = registros[s] + registros[t]; // Suma: reg[r] = reg[s] + reg[t]
-    } 
-    else if(instr_code=="SUB"){
+    }
+    else if (instr_code == "SUB") {
         registros[r] = registros[s] - registros[t]; // Resta: reg[r] = reg[s] - reg[t]
     }
     else if (instr_code == "MUL") {
@@ -67,7 +198,7 @@ void ejecutarOperacion(const Instruction& instr, int* registros){
 
 void ejecutarMemoria(const Instruction& instr, int* registros, int* datos_memoria){
     string instr_code = instr.getInstructionCode();
-    int r =instr.getParameter1(); 
+    int r =instr.getParameter1();
     int d = instr.getParameter2();
     int s = instr.getParameter3();
     int a=d+registros[s]; // si está fuera de los límites del arreglo ERROR
@@ -88,7 +219,7 @@ void ejecutarMemoria(const Instruction& instr, int* registros, int* datos_memori
         }
     }else if(instr_code=="LDA"){
         registros[r]=a;//carga dirección
-       
+
     }else if(instr_code=="LDC"){
         registros[r]=d;//carga constante
     }
@@ -98,7 +229,7 @@ void ejecutarMemoria(const Instruction& instr, int* registros, int* datos_memori
         }
     }else if(instr_code=="JLE"){
         if(registros[r]<=0){
-            registros[pc_registro]=a;//salto si menor o igual a 0 
+            registros[pc_registro]=a;//salto si menor o igual a 0
         }}
     else if(instr_code=="JGE"){
         if(registros[r]>=0){
@@ -113,108 +244,7 @@ void ejecutarMemoria(const Instruction& instr, int* registros, int* datos_memori
             registros[pc_registro]=a;//salto si diferente de 0
         }}
     else{
-        cin<<"Error: instrucción no válida"<<endl;
+        cout<<"Error: instrucción no válida"<<endl;
             exit(EXIT_FAILURE);
         }
-}
-// Métodos setter
-void Instruction::setInstructionId(int instruction_id) {
-    this->instruction_id = instruction_id;
-}
-void Instruction::setInstructionCode(string instruction_code) {
-    this->instruction_code = instruction_code;
-}
-void Instruction::setParameter1(int parameter_1) {
-    this->parameter_1 = parameter_1;
-}
-void Instruction::setParameter2(int parameter_2) {
-    this->parameter_2 = parameter_2;
-}
-void Instruction::setParameter3(int parameter_3) {
-    this->parameter_3 = parameter_3;
-}
-int Instruction::getInstructionId() {
-    return instruction_id;
-}
-string Instruction::getInstructionCode() {
-    return instruction_code;
-}
-int Instruction::getParameter1() {
-    return parameter_1;
-}
-int Instruction::getParameter2() {
-    return parameter_2;
-}
-int Instruction::getParameter3() {
-    return parameter_3;
-}
-
-int getFileLength(string filepath) {
-    ifstream instructions(filepath, ios::in); // se lee el archivo
-    if (!instructions) { //valiación en caso de que no se haya leido de manera correcta el archivo
-        cerr << "El archivo de instrucciones no se pudo leer correctamente, por favo intente de nuevo\n" << endl;
-        exit(EXIT_FAILURE);
-    }
-    std::string linea;
-    int contadorLineas = 0;
-
-    while (getline(instructions, linea)) {
-        contadorLineas++;  // Incrementar contador por cada línea leída
-    }
-
-    instructions.close();
-    cout << contadorLineas << endl;
-    return contadorLineas;
-}
-
-
-void readInstructionCSV(string filepath, int file_length) {
-    ifstream instructions(filepath, ios::in); // se lee el archivo
-    if (!instructions) { //valiación en caso de que no se haya leido de manera correcta el archivo
-        cerr << "El archivo de instrucciones no se pudo leer correctamente, por favo intente de nuevo\n" << endl;
-        exit(EXIT_FAILURE);
-    }
-    string temp_linea; // declaramos el string en donde vamos a almacenar el csv
-    while (getline(instructions, temp_linea)) {
-        int temp_id = 0;
-        string temp_instruction = "";
-        int temp_parameter1 = 0;
-        int temp_parameter2 = 0;
-        int temp_parameter3 = 0;
-
-        stringstream ss(temp_linea);
-        string component;
-        getline(ss, component, ':');
-
-    }
-
-
-    for (int i = 0; i < file_length; i++) {
-        getline(instructions, temp_linea, ':');
-        
-
-    }
-
-    /*
-    while (getline(instructions, temp_linea, '\n')) {
-        cout << temp_linea << endl;
-        while (getline(instructions, temp_linea, ':')) {
-            cout << temp_linea << endl;
-            int temp_instruction_id = stoi(temp_linea);
-            //getline
-        }
-    }
-    */
-}
-void ejecutarInstruccion(const Instruction& instr, int* registros, int* datos_memoria) {
-    string instr_code = instr.getInstructionCode();
-
-    if(instr_code=="ADD"||instr_code=="SUB"||instr_code=="MUL"||instr_code=="DIV"||instr_code=="IN"||instr_code=="OUT"||instr_code=="HALT"){
-        ejecutarOperacion(instr, registros);
-}else if(instr_code=="LD"||instr_code=="LDA"||instr_code=="ST"||instr_code=="LDC"||instr_code=="JLT"||instr_code=="JLE"||instr_code=="JGE"||instr_code=="JEQ"||instr_code=="JNE"){
-    ejecutarMemoria(instr, registros, datos_memoria);
-}else{
-    cout<<"Error: instrucción no válida"<<endl;
-    exit(EXIT_FAILURE);
-}
 }

@@ -8,16 +8,17 @@ const int num_registros = 8;
 const int pc_registro = 7;
 
 // estructuras importantes
-int datos_memoria[max_datos] = { 0 };  
-int registros[num_registros] = { 0 };   
+int datos_memoria[max_datos] = { 0 };
+int registros[num_registros] = { 0 };
 int file_length = 0;
 std::string filePath = "C:\\Users\\emili\\OneDrive\\Escritorio\\UP\\_quinto_\\teorias_lenguajes\\ejemplo_instruccion.txt";
+vector <Instruction> instrucciones;
 
 int main() {
     bool programm_running_flag = true;
 
     while (programm_running_flag) {
-        printMenu();    
+        printMenu();
         int opcion = 0;
         std::cin >> opcion;
 
@@ -27,20 +28,17 @@ int main() {
             //std::cin >> filePath;
             file_length = getFileLength(filePath);
 
-             // Validar que el archivo no esté vacío
-            if (file_length == 0) {
-                std::cerr << "Error: El archivo está vacío o no pudo ser leído." << std::endl;
-                break;
-            }
+            // Validar que el archivo no esté vacío
 
-            readInstructionCSV(filePath, file_length); 
+            readInstructionCSV(filePath, instrucciones);
             break;
+            
         case 2: {
             int id, p1, p2, p3;
             std::string code;
             std::cout << "Introduzca una instrucción en el formato: ID CODE P1 P2 P3\n" << std::endl;
             std::cin >> id >> code >> p1 >> p2 >> p3;
-            
+
             // Verificar si la entrada es válida
             if (std::cin.fail()) {
                 std::cerr << "Entrada inválida, por favor intente de nuevo." << std::endl;
@@ -48,25 +46,26 @@ int main() {
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 break;
             }
-            
+
             // Válidas instrucciones de operación y memoria
-                std::set<std::string> instrucciones_validas = {
-                    "ADD", "SUB", "MUL", "DIV",   // Operaciones
-                    "IN", "OUT", "HALT",          // Entrada/Salida
-                    "LD", "LDA", "ST",            // Instrucciones de memoria
-                    "JLT", "JLE", "JGE", "JEQ", "JNE"  // Saltos condicionales
-                };
+            std::set<std::string> instrucciones_validas = {
+                "ADD", "SUB", "MUL", "DIV",   // Operaciones
+                "IN", "OUT", "HALT",          // Entrada/Salida
+                "LD", "LDA", "ST",            // Instrucciones de memoria
+                "JLT", "JLE", "JGE", "JEQ", "JNE"  // Saltos condicionales
+            };
 
             // Verificar si el código de instrucción es válido
             if (instrucciones_validas.find(code) == instrucciones_validas.end()) {
                 std::cerr << "Error: Instrucción desconocida: " << code << std::endl;
                 break;  // Salir si la instrucción no es válida
-}
+            }
 
-            Instruction instr(id, code, p1, p2, p3);    
-            ejecutarInstruccion(instr, registros, datos_memoria);   
+            Instruction instr(id, code, p1, p2, p3);
+            ejecutarInstruccion(instr, registros, datos_memoria);
             break;
         }
+        
         case 3:
             programm_running_flag = false;
             std::cout << "Saliendo del programa...\n" << std::endl;

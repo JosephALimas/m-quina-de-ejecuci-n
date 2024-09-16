@@ -5,6 +5,8 @@
 #include <sstream>
 #include <cstdlib>
 #include <vector>
+#include <set>
+#include <limits>
 using namespace std;
 
 // Clase para manejar las instrucciones
@@ -27,11 +29,11 @@ public:
     void setParameter1(int parameter_1);
     void setParameter2(int parameter_2);
     void setParameter3(int parameter_3);
-    int getInstructionId();
-    string getInstructionCode();
-    int getParameter1();
-    int getParameter2();
-    int getParameter3();
+    int getInstructionId() const;
+    string getInstructionCode() const;
+    int getParameter1() const;
+    int getParameter2() const;
+    int getParameter3() const;
 };
 
 // Funciones para manejar la máquina de ejecución
@@ -41,4 +43,4 @@ void ejecutarOperacion(const Instruction& instr, int* registros);
 void ejecutarMemoria(const Instruction& instr, int* registros, int* datos_memoria);
 void printMenu();
 int getFileLength(string filetpath);
-void readInstructionCSV(string filepath, int file_length);
+void readInstructionCSV(string filepath, vector<Instruction>& instrucciones);
