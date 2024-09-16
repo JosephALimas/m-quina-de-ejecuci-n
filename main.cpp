@@ -62,7 +62,7 @@ int main() {
             }
 
             Instruction instr(id, code, p1, p2, p3);
-            ejecutarInstruccion(instr, registros, datos_memoria);
+            ejecutarInstruccion(instr, registros, datos_memoria, max_datos, pc_registro);
             break;
         }
         

@@ -139,14 +139,14 @@ void readInstructionCSV(string filepath, vector<Instruction>& instrucciones) {
     }
 }
 
-void ejecutarInstruccion(const Instruction& instr, int* registros, int* datos_memoria) {
+void ejecutarInstruccion(const Instruction& instr, int* registros, int* datos_memoria, const int& max_datos, const int& pc_registro) {
     string instr_code = instr.getInstructionCode();
 
     if (instr_code == "ADD" || instr_code == "SUB" || instr_code == "MUL" || instr_code == "DIV" || instr_code == "IN" || instr_code == "OUT" || instr_code == "HALT") {
         ejecutarOperacion(instr, registros);
     }
     else if (instr_code == "LD" || instr_code == "LDA" || instr_code == "ST" || instr_code == "LDC" || instr_code == "JLT" || instr_code == "JLE" || instr_code == "JGE" || instr_code == "JEQ" || instr_code == "JNE") {
-        ejecutarMemoria(instr, registros, datos_memoria);
+        ejecutarMemoria(instr, registros, datos_memoria, max_datos, pc_registro);
     }
     else {
         cout << "Error: instrucción no válida" << endl;
@@ -196,7 +196,7 @@ void ejecutarOperacion(const Instruction& instr, int* registros) {
 }
 
 
-void ejecutarMemoria(const Instruction& instr, int* registros, int* datos_memoria){
+void ejecutarMemoria(const Instruction& instr, int* registros, int* datos_memoria, const int& max_datos, const  int& pc_registro){
     string instr_code = instr.getInstructionCode();
     int r =instr.getParameter1();
     int d = instr.getParameter2();
