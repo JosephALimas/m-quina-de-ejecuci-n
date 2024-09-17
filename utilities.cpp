@@ -166,8 +166,10 @@ void ejecutarOperacion(Instruction& instr, int* registros) {
         exit(0);  // Detiene la ejecución
     }
     else if (instr_code == "IN") {
+        int temp_int = 0;
         cout << "Introduce un valor para reg[" << r << "]: ";
-        cin >> registros[r];  // Almacena el valor en reg[r]
+        cin >> temp_int;  // Almacena el valor en reg[r]
+        registros[r] += temp_int;
     }
     else if (instr_code == "OUT") {
         cout << "Valor de reg[" << r << "]: " << registros[r] << endl;  // Imprime el valor de reg[r]
