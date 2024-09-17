@@ -31,10 +31,14 @@ int main() {
             // Validar que el archivo no esté vacío
 
             readInstructionCSV(filePath, instrucciones);
+            for (int i = 0; i < file_length; i++) {
+                cout << instrucciones[i].getInstructionId() << endl;
+            }
+            
             for (int i = 0; i <= file_length; i++) {
                 ejecutarInstruccion(instrucciones[i], registros, datos_memoria, max_datos, pc_registro);
             }
-
+            
             break;
 
         case 2: {
@@ -69,7 +73,7 @@ int main() {
             ejecutarInstruccion(instr, registros, datos_memoria, max_datos, pc_registro);
             break;
         }
-
+        
         case 3:
             programm_running_flag = false;
             std::cout << "Saliendo del programa...\n" << std::endl;

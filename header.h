@@ -29,18 +29,18 @@ public:
     void setParameter1(int parameter_1);
     void setParameter2(int parameter_2);
     void setParameter3(int parameter_3);
-    int getInstructionId() const;
-    string getInstructionCode() const;
-    int getParameter1() const;
-    int getParameter2() const;
-    int getParameter3() const;
+    int getInstructionId();
+    string getInstructionCode();
+    int getParameter1();
+    int getParameter2();
+    int getParameter3();
 };
 
 // Funciones para manejar la máquina de ejecución
 //void ejecutarArchivo(string filePath);
-void ejecutarInstruccion(const Instruction& instr, int* registros, int* datos_memoria, const int& max_datos, const  int& pc_registro);
-void ejecutarOperacion(const Instruction& instr, int* registros);
-void ejecutarMemoria(const Instruction& instr, int* registros, int* datos_memoria, const  int& max_datos, const int& pc_registro);
+void ejecutarInstruccion( Instruction& instr, int* registros, int* datos_memoria, const int& max_datos, const  int& pc_registro);
+void ejecutarOperacion( Instruction& instr, int* registros);
+void ejecutarMemoria( Instruction& instr, int* registros, int* datos_memoria, const  int& max_datos, const int& pc_registro);
 void printMenu();
 int getFileLength(string filetpath);
 void readInstructionCSV(string filepath, vector<Instruction>& instrucciones);

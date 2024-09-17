@@ -40,19 +40,19 @@ void Instruction::setParameter2(int parameter_2) {
 void Instruction::setParameter3(int parameter_3) {
     this->parameter_3 = parameter_3;
 }
-int Instruction::getInstructionId()  {
+int Instruction::getInstructionId() {
     return instruction_id;
 }
-string Instruction::getInstructionCode()  {
+string Instruction::getInstructionCode() {
     return instruction_code;
 }
-int Instruction::getParameter1()   {
+int Instruction::getParameter1() {
     return parameter_1;
 }
-int Instruction::getParameter2()   {
+int Instruction::getParameter2() {
     return parameter_2;
 }
-int Instruction::getParameter3()   {
+int Instruction::getParameter3() {
     return parameter_3;
 }
 
@@ -139,7 +139,7 @@ void readInstructionCSV(string filepath, vector<Instruction>& instrucciones) {
     }
 }
 
-void ejecutarInstruccion( Instruction& instr, int* registros, int* datos_memoria, const int& max_datos, const int& pc_registro) {
+void ejecutarInstruccion(Instruction& instr, int* registros, int* datos_memoria, const int& max_datos, const int& pc_registro) {
     string instr_code = instr.getInstructionCode();
 
     if (instr_code == "ADD" || instr_code == "SUB" || instr_code == "MUL" || instr_code == "DIV" || instr_code == "IN" || instr_code == "OUT" || instr_code == "HALT") {
@@ -155,7 +155,7 @@ void ejecutarInstruccion( Instruction& instr, int* registros, int* datos_memoria
 }
 
 
-void ejecutarOperacion( Instruction& instr, int* registros) {
+void ejecutarOperacion(Instruction& instr, int* registros) {
     string instr_code = instr.getInstructionCode();
     int r = instr.getParameter1();
     int s = instr.getParameter2();
@@ -196,59 +196,70 @@ void ejecutarOperacion( Instruction& instr, int* registros) {
 }
 
 
-void ejecutarMemoria( Instruction& instr, int* registros, int* datos_memoria, const int& max_datos, const  int& pc_registro){
+void ejecutarMemoria(Instruction& instr, int* registros, int* datos_memoria, const int& max_datos, const  int& pc_registro) {
     string instr_code = instr.getInstructionCode();
-    int r =instr.getParameter1();
+    int r = instr.getParameter1();
     int d = instr.getParameter2();
     int s = instr.getParameter3();
-    int a=d+registros[s]; // si está fuera de los límites del arreglo ERROR
+    int a = d + registros[s]; // si está fuera de los límites del arreglo ERROR
 
-    if (instr_code=="LD"){
-        if(a<0 ||a>=max_datos){
-            cout<<"Error: dirección fuera de los límites del arreglo"<<endl;
-             exit(EXIT_FAILURE);
-        }else{
-            registros[r]=datos_memoria[a]; // carga el valor de la memoria en el registro
-        }
-    }else if(instr_code=="ST"){
-        if(a<0 ||a>=max_datos){
-            cout<<"Error: dirección fuera de los límites del arreglo"<<endl;
-             exit(EXIT_FAILURE);
-        }else{
-            datos_memoria[a]=registros[r];// guarda el valor del registro en la memoria
-        }
-    }else if(instr_code=="LDA"){
-        registros[r]=a;//carga dirección
-
-    }else if(instr_code=="LDC"){
-        registros[r]=d;//carga constante
-    }
-    else if(instr_code=="JLT"){
-        if(registros[r]<0){
-            registros[pc_registro]=a;//salto si <0
-        }
-    }else if(instr_code=="JLE"){
-        if(registros[r]<=0){
-            registros[pc_registro]=a;//salto si menor o igual a 0
-        }}
-    else if(instr_code=="JGE"){
-        if(registros[r]>=0){
-            registros[pc_registro]=a;//salto si mayor o igual a 0
-        }}
-    else if(instr_code=="JGT"){
-        if(registros[r]>0){
-            registros[pc_registro]=a;//salto si mayor a 0
-        }}
-    else if(instr_code=="JEQ"){
-        if(registros[r]==0){
-            registros[pc_registro]=a;//salto si igual a 0
-        }}
-    else if(instr_code=="JNE"){
-        if(registros[r]!=0){
-            registros[pc_registro]=a;//salto si diferente de 0
-        }}
-    else{
-        cout<<"Error: instrucción no válida"<<endl;
+    if (instr_code == "LD") {
+        if (a < 0 || a >= max_datos) {
+            cout << "Error: dirección fuera de los límites del arreglo" << endl;
             exit(EXIT_FAILURE);
         }
+        else {
+            registros[r] = datos_memoria[a]; // carga el valor de la memoria en el registro
+        }
+    }
+    else if (instr_code == "ST") {
+        if (a < 0 || a >= max_datos) {
+            cout << "Error: dirección fuera de los límites del arreglo" << endl;
+            exit(EXIT_FAILURE);
+        }
+        else {
+            datos_memoria[a] = registros[r];// guarda el valor del registro en la memoria
+        }
+    }
+    else if (instr_code == "LDA") {
+        registros[r] = a;//carga dirección
+
+    }
+    else if (instr_code == "LDC") {
+        registros[r] = d;//carga constante
+    }
+    else if (instr_code == "JLT") {
+        if (registros[r] < 0) {
+            registros[pc_registro] = a;//salto si <0
+        }
+    }
+    else if (instr_code == "JLE") {
+        if (registros[r] <= 0) {
+            registros[pc_registro] = a;//salto si menor o igual a 0
+        }
+    }
+    else if (instr_code == "JGE") {
+        if (registros[r] >= 0) {
+            registros[pc_registro] = a;//salto si mayor o igual a 0
+        }
+    }
+    else if (instr_code == "JGT") {
+        if (registros[r] > 0) {
+            registros[pc_registro] = a;//salto si mayor a 0
+        }
+    }
+    else if (instr_code == "JEQ") {
+        if (registros[r] == 0) {
+            registros[pc_registro] = a;//salto si igual a 0
+        }
+    }
+    else if (instr_code == "JNE") {
+        if (registros[r] != 0) {
+            registros[pc_registro] = a;//salto si diferente de 0
+        }
+    }
+    else {
+        cout << "Error: instrucción no válida" << endl;
+        exit(EXIT_FAILURE);
+    }
 }
