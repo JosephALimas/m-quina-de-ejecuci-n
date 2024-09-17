@@ -104,6 +104,10 @@ void ejecutarMemoria(const Instruction& instr, int* registros, int* datos_memori
         if(registros[r]>=0){
             registros[pc_registro]=a;//salto si mayor o igual a 0
         }}
+    else if(instr_code=="JGT"){
+        if(registros[r]>0){
+            registros[pc_registro]=a;//salto si mayor a 0
+        }}
     else if(instr_code=="JEQ"){
         if(registros[r]==0){
             registros[pc_registro]=a;//salto si igual a 0
