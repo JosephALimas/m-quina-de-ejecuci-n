@@ -34,16 +34,16 @@ int main() {
             for (int i = 0; i < file_length; i++) {
                 cout << instrucciones[i].getInstructionId() << endl;
             }
-           cout<<"---------------"<<endl;
+            cout << "---------------" << endl;
 
             for (int i = 0; i <= file_length; i++) {
                 ejecutarInstruccion(instrucciones[i], registros, datos_memoria, max_datos, pc_registro);
-                for (int l = 0; l < 8; l++){
-                    cout<<registros[i]<<endl;
+                for (int l = 0; l < 8; l++) {
+                    cout << registros[l] << endl;
                 }
-                cout<<"---------------"<<endl;
+                cout << "---------------" << endl;
             }
-            
+
             break;
 
         case 2: {
@@ -78,7 +78,7 @@ int main() {
             ejecutarInstruccion(instr, registros, datos_memoria, max_datos, pc_registro);
             break;
         }
-        
+
         case 3:
             programm_running_flag = false;
             std::cout << "Saliendo del programa...\n" << std::endl;

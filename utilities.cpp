@@ -5,7 +5,8 @@ void printMenu() {
     cout << "--------Maquina de ejecucion--------\n";
     cout << "Seleccione una opcion\n";
     cout << "1.- Ejecutar un archivo\n";
-    cout << "2.- Ejecutar instrucciónes\n";
+    cout << "2.- Finalizar la ejecución\n";
+
 }
 Instruction::Instruction() {
     this->instruction_id = 0;
@@ -169,7 +170,7 @@ void ejecutarOperacion(Instruction& instr, int* registros) {
         int temp_int = 0;
         cout << "Introduce un valor para reg[" << r << "]: ";
         cin >> temp_int;  // Almacena el valor en reg[r]
-        registros[r] += temp_int;
+        registros[r-1] += temp_int;
     }
     else if (instr_code == "OUT") {
         cout << "Valor de reg[" << r << "]: " << registros[r] << endl;  // Imprime el valor de reg[r]
