@@ -44,3 +44,4 @@ void ejecutarMemoria(Instruction& instr, int* registros, int* datos_memoria, con
 void printMenu();
 int getFileLength(string filetpath);
 void readInstructionCSV(string filepath, vector<Instruction>& instrucciones);
+void printOperacion(Instruction& instruccion);

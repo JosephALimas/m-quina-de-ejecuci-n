@@ -34,12 +34,13 @@ int main() {
             for (int i = 0; i < file_length; i++) {
                 cout << instrucciones[i].getInstructionId() << endl;
             }
-            cout << "---------------" << endl;
+            cout << "--------------- REGISTROS CADA OPERACION ---------------" << endl;
 
             for (int i = 0; i <= file_length; i++) {
                 ejecutarInstruccion(instrucciones[i], registros, datos_memoria, max_datos, pc_registro);
+                printOperacion(instrucciones[i]);
                 for (int l = 0; l < 8; l++) {
-                    cout << registros[l] << endl;
+                    cout <<"#"<<l<<": "<< registros[l] << endl;
                 }
                 cout << "---------------" << endl;
             }

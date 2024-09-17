@@ -266,3 +266,7 @@ void ejecutarMemoria(Instruction& instr, int* registros, int* datos_memoria, con
         exit(EXIT_FAILURE);
     }
 }
+
+void printOperacion(Instruction& instruccion){
+    cout <<instruccion.getInstructionId()<<": "<<instruccion.getInstructionCode()<<" "<<instruccion.getParameter1()<<" "<<instruccion.getParameter2()<<" "<<instruccion.getParameter3()<<" "<<endl;
+}
