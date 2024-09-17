@@ -40,7 +40,7 @@ public:
 //void ejecutarArchivo(string filePath);
 void ejecutarInstruccion(const Instruction& instr, int* registros, int* datos_memoria, const int& max_datos, const  int& pc_registro);
 void ejecutarOperacion(const Instruction& instr, int* registros);
-void ejecutarMemoria(const Instruction& instr, int* registros, int* datos_memoria,const  int& max_datos, const int& pc_registro);
+void ejecutarMemoria(const Instruction& instr, int* registros, int* datos_memoria, const  int& max_datos, const int& pc_registro);
 void printMenu();
 int getFileLength(string filetpath);
 void readInstructionCSV(string filepath, vector<Instruction>& instrucciones);

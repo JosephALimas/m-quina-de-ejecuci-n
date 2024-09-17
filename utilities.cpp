@@ -40,19 +40,19 @@ void Instruction::setParameter2(int parameter_2) {
 void Instruction::setParameter3(int parameter_3) {
     this->parameter_3 = parameter_3;
 }
-int Instruction::getInstructionId() const {
+int Instruction::getInstructionId()  {
     return instruction_id;
 }
-string Instruction::getInstructionCode() const {
+string Instruction::getInstructionCode()  {
     return instruction_code;
 }
-int Instruction::getParameter1()  const {
+int Instruction::getParameter1()   {
     return parameter_1;
 }
-int Instruction::getParameter2()  const {
+int Instruction::getParameter2()   {
     return parameter_2;
 }
-int Instruction::getParameter3()  const {
+int Instruction::getParameter3()   {
     return parameter_3;
 }
 
@@ -139,7 +139,7 @@ void readInstructionCSV(string filepath, vector<Instruction>& instrucciones) {
     }
 }
 
-void ejecutarInstruccion(const Instruction& instr, int* registros, int* datos_memoria, const int& max_datos, const int& pc_registro) {
+void ejecutarInstruccion( Instruction& instr, int* registros, int* datos_memoria, const int& max_datos, const int& pc_registro) {
     string instr_code = instr.getInstructionCode();
 
     if (instr_code == "ADD" || instr_code == "SUB" || instr_code == "MUL" || instr_code == "DIV" || instr_code == "IN" || instr_code == "OUT" || instr_code == "HALT") {
@@ -155,7 +155,7 @@ void ejecutarInstruccion(const Instruction& instr, int* registros, int* datos_me
 }
 
 
-void ejecutarOperacion(const Instruction& instr, int* registros) {
+void ejecutarOperacion( Instruction& instr, int* registros) {
     string instr_code = instr.getInstructionCode();
     int r = instr.getParameter1();
     int s = instr.getParameter2();
@@ -196,7 +196,7 @@ void ejecutarOperacion(const Instruction& instr, int* registros) {
 }
 
 
-void ejecutarMemoria(const Instruction& instr, int* registros, int* datos_memoria, const int& max_datos, const  int& pc_registro){
+void ejecutarMemoria( Instruction& instr, int* registros, int* datos_memoria, const int& max_datos, const  int& pc_registro){
     string instr_code = instr.getInstructionCode();
     int r =instr.getParameter1();
     int d = instr.getParameter2();
