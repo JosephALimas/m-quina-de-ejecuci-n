@@ -38,8 +38,11 @@ public:
 
 // Funciones para manejar la máquina de ejecución
 //void ejecutarArchivo(string filePath);
-void ejecutarInstruccion(Instruction& instr, int* registros, int* datos_memoria, const int& max_datos, const  int& pc_registro);
-void ejecutarOperacion(Instruction& instr, int* registros);
+void printAyuda();
+void printRegistros(int* registros, int max_registros);
+void reiniciarRegistros(int* registros, int num_registros);
+void ejecutarInstruccion(Instruction& instr, int* registroñs, int* datos_memoria, const int& max_datos, const  int& pc_registro, bool& programm_running_flag);
+void ejecutarOperacion(Instruction& instr, int* registros, bool& programm_running_flag);
 void ejecutarMemoria(Instruction& instr, int* registros, int* datos_memoria, const  int& max_datos, const int& pc_registro);
 void printMenu();
 int getFileLength(string filetpath);

@@ -2,12 +2,54 @@
 
 // Función para imprimir el menú
 void printMenu() {
-    cout << "--------Maquina de ejecucion--------\n";
-    cout << "Seleccione una opcion\n";
-    cout << "1.- Ejecutar un archivo\n";
-    cout << "2.- Finalizar la ejecución\n";
+    cout << "--------Maquina de ejecucion--------\n" << endl;
+    cout << "1.- Instrucciones de ejecución\n" << endl;
+    cout << "2.- Ejecutar un archivo\n" << endl;
+    cout << "3.- Ejecutar instrucción por instrucción\n" << endl;
+    cout << "4.- Reiniciar los registros\n" << endl;
+    cout << "5.- Finalizar la ejecución\n" << endl;
+    cout << "Seleccione una opcion: \n" << endl;
+}
+void printRegistros(int* registros, int max_registros) {
+    cout << "---------------" << endl;
+    for (int i = 0; i < max_registros; i++) {
+        cout << "#" << i << ": " << registros[i] << endl;
+    }
+    cout << "---------------" << endl;
+}
+void printAyuda() {
+    cout << "Instrucciones tipo Operación (formato instrucción r,s,t)\n"<<endl;
+    cout << "-------------------------------------------------------\n" << endl;
+    cout << "HALT\tDetiene la ejecución de la máquina. Los parámetros son ignorados.\n" << endl;
+    cout << "IN\treg[r] se lee de la entrada y se almacena en reg[r] (s y t son ignorados).\n" << endl;
+    cout << "OUT\treg[r] se escribe en la salida con el valor de reg[r] (s y t son ignorados).\n" << endl;
+    cout << "ADD\treg[r] = reg[s] + reg[t]\n" << endl;
+    cout << "SUB\treg[r] = reg[s] - reg[t]\n" << endl;
+    cout << "MUL\treg[r] = reg[s] * reg[t]\n" << endl;
+    cout << "DIV\treg[r] = reg[s] / reg[t] (debe generar error si se divide por cero).\n\n" << endl;
+    cout << "Instrucciones tipo Memoria (formato instrucción r,d(s))\n" << endl;
+    cout << "-------------------------------------------------------\n" << endl;
+    cout << "LD\treg[r] = datos_Memoria[a]\n" << endl;
+    cout << "LDA\treg[r] = a\n" << endl;
+    cout << "LDC\treg[r] = d (s es ignorado)\n" << endl;
+    cout << "ST\tdatos_Memoria[a] = reg[r]\n" << endl;
+    cout << "JLT\tIf reg[r] < 0 reg[REG_EJEC] = a\n" << endl;
+    cout << "JLE\tIf reg[r] <= 0 reg[REG_EJEC] = a\n" << endl;
+    cout << "JGE\tIf reg[r] >= 0 reg[REG_EJEC] = a\n" << endl;
+    cout << "JGT\tIf reg[r] > 0 reg[REG_EJEC] = a\n" << endl;
+    cout << "JEQ\tIf reg[r] == 0 reg[REG_EJEC] = a\n" << endl;
+    cout << "JNE\tIf reg[r] != 0 reg[REG_EJEC] = a\n" << endl;
 
 }
+
+void reiniciarRegistros(int* registros, int num_registros) {
+    for (int i = 0; i < num_registros; i++) {
+        registros[i] = 0;
+    }
+    printRegistros(registros, num_registros);
+
+}
+
 Instruction::Instruction() {
     this->instruction_id = 0;
     this->instruction_code = "";
@@ -140,11 +182,11 @@ void readInstructionCSV(string filepath, vector<Instruction>& instrucciones) {
     }
 }
 
-void ejecutarInstruccion(Instruction& instr, int* registros, int* datos_memoria, const int& max_datos, const int& pc_registro) {
+void ejecutarInstruccion(Instruction& instr, int* registros, int* datos_memoria, const int& max_datos, const int& pc_registro, bool& programm_running_flag) {
     string instr_code = instr.getInstructionCode();
 
     if (instr_code == "ADD" || instr_code == "SUB" || instr_code == "MUL" || instr_code == "DIV" || instr_code == "IN" || instr_code == "OUT" || instr_code == "HALT") {
-        ejecutarOperacion(instr, registros);
+        ejecutarOperacion(instr, registros, programm_running_flag);
     }
     else if (instr_code == "LD" || instr_code == "LDA" || instr_code == "ST" || instr_code == "LDC" || instr_code == "JLT" || instr_code == "JLE" || instr_code == "JGE" || instr_code == "JEQ" || instr_code == "JNE") {
         ejecutarMemoria(instr, registros, datos_memoria, max_datos, pc_registro);
@@ -156,21 +198,21 @@ void ejecutarInstruccion(Instruction& instr, int* registros, int* datos_memoria,
 }
 
 
-void ejecutarOperacion(Instruction& instr, int* registros) {
+void ejecutarOperacion(Instruction& instr, int* registros, bool& programm_running_flag) {
     string instr_code = instr.getInstructionCode();
     int r = instr.getParameter1();
     int s = instr.getParameter2();
     int t = instr.getParameter3();
 
     if (instr_code == "HALT") {
-        cout << "Máquina detenida." << endl;
-        exit(0);  // Detiene la ejecución
+        cout << "¡¡¡¡Máquina detenida!!!!" << endl;
+        programm_running_flag = false;  // Detiene la ejecución
     }
     else if (instr_code == "IN") {
         int temp_int = 0;
         cout << "Introduce un valor para reg[" << r << "]: ";
         cin >> temp_int;  // Almacena el valor en reg[r]
-        registros[r-1] += temp_int;
+        registros[r - 1] += temp_int;
     }
     else if (instr_code == "OUT") {
         cout << "Valor de reg[" << r << "]: " << registros[r] << endl;  // Imprime el valor de reg[r]
@@ -267,6 +309,6 @@ void ejecutarMemoria(Instruction& instr, int* registros, int* datos_memoria, con
     }
 }
 
-void printOperacion(Instruction& instruccion){
-    cout <<instruccion.getInstructionId()<<": "<<instruccion.getInstructionCode()<<" "<<instruccion.getParameter1()<<" "<<instruccion.getParameter2()<<" "<<instruccion.getParameter3()<<" "<<endl;
+void printOperacion(Instruction& instruccion) {
+    cout << instruccion.getInstructionId() << ": " << instruccion.getInstructionCode() << " " << instruccion.getParameter1() << " " << instruccion.getParameter2() << " " << instruccion.getParameter3() << " " << endl;
 }
